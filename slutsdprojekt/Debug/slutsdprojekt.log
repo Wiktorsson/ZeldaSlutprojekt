@@ -1,0 +1,21 @@
+﻿  player.cpp
+c:\users\9907jowi\dropbox\slutsdprojekt\slutsdprojekt\player.cpp(33): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\9907jowi\dropbox\slutsdprojekt\slutsdprojekt\player.cpp(49): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\9907jowi\dropbox\slutsdprojekt\slutsdprojekt\player.cpp(65): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\9907jowi\dropbox\slutsdprojekt\slutsdprojekt\player.cpp(81): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\9907jowi\dropbox\slutsdprojekt\slutsdprojekt\player.cpp(103): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+c:\users\9907jowi\dropbox\slutsdprojekt\slutsdprojekt\player.cpp(107): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+c:\users\9907jowi\dropbox\slutsdprojekt\slutsdprojekt\player.cpp(114): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  Main.cpp
+c:\users\9907jowi\dropbox\slutsdprojekt\slutsdprojekt\tilemap.h(45): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\9907jowi\dropbox\slutsdprojekt\slutsdprojekt\tilemap.h(46): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\9907jowi\dropbox\slutsdprojekt\slutsdprojekt\tilemap.h(47): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\9907jowi\dropbox\slutsdprojekt\slutsdprojekt\tilemap.h(48): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\9907jowi\dropbox\slutsdprojekt\slutsdprojekt\tilemap.h(51): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\9907jowi\dropbox\slutsdprojekt\slutsdprojekt\tilemap.h(52): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\9907jowi\dropbox\slutsdprojekt\slutsdprojekt\tilemap.h(53): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\9907jowi\dropbox\slutsdprojekt\slutsdprojekt\tilemap.h(54): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+  Generating Code...
+  LINK : C:\Users\9907jowi\Dropbox\slutsdprojekt\Debug\slutsdprojekt.exe not found or not built by the last incremental link; performing full link
+  slutsdprojekt.vcxproj -> C:\Users\9907jowi\Dropbox\slutsdprojekt\Debug\slutsdprojekt.exe
+  slutsdprojekt.vcxproj -> C:\Users\9907jowi\Dropbox\slutsdprojekt\Debug\slutsdprojekt.pdb (Full PDB)

@@ -1,0 +1,287 @@
+MAIN 
+
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+#include "tilemap.cpp"
+#include "Player.h"
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <vector>
+
+int main()
+{
+	std::vector<int>vect;
+	std::ifstream file;
+	file.open("maps\\map1_1-1.txt");
+	std::string output;
+
+	if (file.is_open())
+	{
+		while (!file.eof())
+		{
+			file >> output;
+			std::cout << output;
+			std::stringstream ss(output);
+
+			int i;
+
+			while (ss >> i)
+			{
+				vect.push_back(i);
+
+				if (ss.peek() == ',')
+					ss.ignore();
+			}
+		}
+	}
+
+	sf::Font fontLoot;
+	fontLoot.loadFromFile("rsfont.ttf");
+	sf::Text textLoot;
+	textLoot.setFont(fontLoot);
+	textLoot.setString("Water Walking boots obtained!");
+	textLoot.setColor(sf::Color(127, 51, 00));
+	textLoot.setCharacterSize(50);
+	textLoot.setStyle(sf::Text::Bold | sf::Text::Underlined);
+	textLoot.setPosition(620, 700);
+	sf::Music gameMusic;
+	gameMusic.openFromFile("guile.ogg");
+	gameMusic.play();
+	sf::SoundBuffer doorBuffer;
+	doorBuffer.loadFromFile("door.ogg");
+	sf::Sound coinSound, doorSound;
+	doorSound.setBuffer(doorBuffer);
+	sf::Texture skor, husUte, husInne;
+	husInne.loadFromFile("hus.png");
+	husUte.loadFromFile("houseSprite.png");
+	skor.loadFromFile("skor.png");
+	sf::Sprite spriteSkor, spriteHus, spriteInne;
+	spriteInne.setTexture(husInne);
+	spriteHus.setTexture(husUte);
+	spriteInne.setTextureRect(sf::IntRect(0, 0, 610, 480));
+	spriteHus.setTextureRect(sf::IntRect(0, 0, 610, 480));
+	spriteSkor.setTexture(skor);
+	spriteSkor.setTextureRect(sf::IntRect(0, 0, 80, 80));
+	spriteInne.setPosition(750, 320);
+	spriteHus.setPosition(750, 320);
+	spriteSkor.setPosition(1260, 310);
+	bool skorEquipped = false;
+	// create the window
+
+	sf::RenderWindow window(sf::VideoMode(1600, 1600), "Tilemap");
+
+	CPlayer hero((int)window.getSize().x, (int)window.getSize().y);
+
+
+
+
+
+	int environment = 1;
+
+	// define the level with an array of tile indices
+
+	int *currentTilemap = &vect[0];
+
+	int *level2 = &vect[400];
+
+	int *level3 = &vect[800];
+	
+	// create the tilemap from the level definition
+	TileMap map;
+	if (!map.load("tilemap.png", sf::Vector2u(80, 80), currentTilemap, 20, 20))
+		return -1;
+	std::cout << map.getPosition().x << std::endl;
+	std::cout << map.getPosition().y << std::endl;
+	TileMap map2;
+	if (!map2.load("tilemap2.png", sf::Vector2u(80, 80), level2, 20, 20))
+		return -1;
+	TileMap map3;
+	if (!map3.load("skor.png", sf::Vector2u(80, 80), level3, 20, 20))
+		return -1;
+
+
+
+	// run the main loop
+	while (window.isOpen())
+	{
+
+		int xTile = (int)(hero.getPosX() / 80);
+		int yTile = (int)(hero.getPosY() / 80);
+		int heroTile = yTile * 20 + xTile;
+		// handle events
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				window.close();
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		{
+			heroTile = (hero.getPosY() + 42) / 80 * 20 + hero.getPosX() / 80;
+			if (currentTilemap[heroTile] != 1 && level2[heroTile] != 1 && level2[heroTile] != 2 && level2[heroTile] != 3 && currentTilemap[heroTile] != 5 && level2[heroTile] != 8)
+			{
+				hero.moveDown();
+
+			}
+			else if (currentTilemap[heroTile] == 1 && skorEquipped == true)
+			{
+				hero.moveDown();
+			}
+			if (level3[heroTile] == 2)
+			{
+				hero.skorEquip();
+				spriteSkor.setPosition(10101010, 101010);
+			}
+			if (currentTilemap[heroTile] == 8)
+			{
+				environment = 2;
+			}
+			if (currentTilemap[heroTile] == 9)
+			{
+				environment = 1;
+			}
+
+
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		{
+
+			heroTile = (hero.getPosY() - 42) / 80 * 20 + hero.getPosX() / 80;
+			if (currentTilemap[heroTile] != 1 && level2[heroTile] != 1 && level2[heroTile] != 2 && level2[heroTile] != 3 && currentTilemap[heroTile] != 5 && level2[heroTile] != 8)
+			{
+				hero.moveUp();
+
+			}
+			else if (currentTilemap[heroTile] == 1 && skorEquipped == true)
+			{
+				hero.moveUp();
+			}
+			if (level3[heroTile] == 2)
+			{
+				hero.skorEquip();
+				spriteSkor.setPosition(10101010, 101010);
+			}
+			if (currentTilemap[heroTile] == 8)
+			{
+				environment = 2;
+				doorSound.play();
+			}
+			if (currentTilemap[heroTile] == 9)
+			{
+				environment = 1;
+			}
+
+
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		{
+
+			heroTile = hero.getPosY() / 80 * 20 + (hero.getPosX() - 42) / 80;
+			if (currentTilemap[heroTile] != 1 && level2[heroTile] != 1 && level2[heroTile] != 2 && level2[heroTile] != 3 && currentTilemap[heroTile] != 5 && level2[heroTile] != 8)
+			{
+				hero.moveLeft();
+
+			}
+			else if (currentTilemap[heroTile] == 1 && skorEquipped == true)
+			{
+				hero.moveLeft();
+			}
+			if (level3[heroTile] == 2)
+			{
+				hero.skorEquip();
+				spriteSkor.setPosition(10101010, 101010);
+			}
+			if (currentTilemap[heroTile] == 8)
+			{
+				environment = 2;
+			}
+			if (currentTilemap[heroTile] == 9)
+			{
+				environment = 1;
+			}
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		{
+			heroTile = hero.getPosY() / 80 * 20 + (hero.getPosX() + 42) / 80;
+			if (currentTilemap[heroTile] != 1 && level2[heroTile] != 1 && level2[heroTile] != 2 && level2[heroTile] != 3 && currentTilemap[heroTile] != 5 && level2[heroTile] != 8)
+			{
+				hero.moveRight();
+
+
+			}
+			else if (currentTilemap[heroTile] == 1 && skorEquipped == true)
+			{
+				hero.moveRight();
+			}
+			if (level3[heroTile] == 2)
+			{
+				window.draw(textLoot);
+				hero.skorEquip();
+				spriteSkor.setPosition(10101010, 101010);
+			}
+			if (currentTilemap[heroTile] == 8)
+			{
+				environment = 2;
+			}
+			if (currentTilemap[heroTile] == 9)
+			{
+				environment = 1;
+			}
+
+
+		}
+
+
+
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			//hero.heroAttack();
+			if (hero.skorOn == true)
+			{
+				skorEquipped = true;
+			}
+			std::cout << "y = " << (int)hero.getPosY() << " x =" << (int)hero.getPosX() << std::endl;
+			std::cout << yTile * 20 + xTile << std::endl;
+			std::cout << currentTilemap[heroTile];
+			hero.skor();
+
+
+
+		}
+
+		
+		
+
+		// draw the map
+		if (environment == 1)
+		{
+			hero.speedUp();
+			window.clear();
+			window.draw(map);
+			window.draw(map3);
+			window.draw(spriteHus);
+			window.draw(hero.draw());
+			window.draw(map2);
+			window.display();
+
+		}
+
+		if (environment == 2)
+		{
+			hero.speedDown();
+			window.clear();
+			window.draw(map3);
+			window.draw(spriteInne);
+			window.draw(spriteSkor);
+			window.draw(hero.draw());
+			window.display();
+		}
+	}
+
+	return 0;
+}

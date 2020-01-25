@@ -1,0 +1,203 @@
+#include "Player.h"
+#include <SFML\Graphics.hpp>
+
+//zelda                m_counter max = 10               storlek 80x80          yCount up = 6  yCount down = 4   yCount right =7    yCount left = 5    
+//
+
+CPlayer::CPlayer(int x, int y)
+{
+	m_playerText.loadFromFile("zelda.png");
+	m_playerText2.loadFromFile("zelda2.png");
+	m_player.setTexture(m_playerText);
+	m_player.setTextureRect(sf::IntRect(0, 0, 80, 80));
+	m_x = x / 2;
+	m_y = y / 2;
+	m_counter = 0;
+	m_Ccounter = 0;
+	m_spd = 3;
+	yCount = 0;
+	sf::IntRect rectHero;
+	m_player.setPosition(m_x,m_y);
+	skorOn = false;
+	
+}
+
+CPlayer::~CPlayer()
+{
+
+}
+sf::Sprite CPlayer::draw() 
+{
+	return m_player;
+}
+void CPlayer::moveUp()        
+{
+	yCount = 6;
+	m_player.setTextureRect(sf::IntRect(m_counter * 80, yCount * 80, 80, 80));
+	m_player.move(0, -m_spd);
+	m_Ccounter++;
+	if (m_Ccounter == 10)
+	{
+		m_counter++;
+		m_Ccounter = 0;
+		if (m_counter == 10)
+		{
+			m_counter = 0;
+			
+		}
+	}
+
+}
+void CPlayer::moveDown()
+{
+	yCount = 4;
+	m_player.setTextureRect(sf::IntRect(m_counter * 80, yCount * 80, 80, 80));
+	m_player.move(0, m_spd);
+	m_Ccounter++;
+	if (m_Ccounter == 10)
+	{
+		
+		m_counter++;
+		m_Ccounter = 0;
+		if (m_counter == 10)
+		{
+			m_counter = 0;
+
+		}
+	}
+
+}
+void CPlayer::moveLeft()
+{
+	yCount = 5;
+	m_player.setTextureRect(sf::IntRect(m_counter * 80, yCount * 80, 80, 80));
+	m_player.move(-m_spd, 0);
+	
+	m_Ccounter++;
+	if (m_Ccounter == 10)
+	{
+		
+		m_counter++;
+		m_Ccounter = 0;
+		if (m_counter == 10)
+		{
+			m_counter = 0;
+
+		}
+	}
+
+}
+void CPlayer::moveRight()
+{
+	yCount = 7;
+	m_player.setTextureRect(sf::IntRect(m_counter * 80, yCount * 80, 80, 80));
+	
+	m_player.move(m_spd, 0);
+	m_Ccounter++;
+	if (m_Ccounter == 10)
+	{
+		m_counter++;
+		m_Ccounter = 0;
+		if (m_counter == 10)
+		{
+			m_counter = 0;
+
+		}
+	}
+
+}
+
+void CPlayer::heroIdle()
+{
+	m_player.setTextureRect(sf::IntRect(0, 80, 80, 80));
+}
+int CPlayer::getPosX()
+{
+	return m_player.getPosition().x + 40;
+}
+int CPlayer::getPosY()
+{
+	return	m_player.getPosition().y + 40;
+}
+void CPlayer::heroAttack()
+{
+	if (yCount == 7)
+	{
+		
+		m_player.move(m_spd, 0);
+		m_player.setTextureRect(sf::IntRect(m_counter * 80, 8 * 80, 80, 80));
+		m_Ccounter++;
+		if (m_Ccounter == 9)
+		{
+			m_counter++;
+			m_Ccounter = 0;
+		}
+		if (m_counter >= 3)
+		{
+			m_counter = 0;
+		}
+		
+	}
+
+
+	if (yCount == 5)
+	{
+		m_player.move(-m_spd, 0);
+	}
+	if (yCount == 4)
+	{
+		m_player.move(0, m_spd);
+	}
+	if (yCount == 6)
+	{
+		m_player.move(0, -m_spd);
+	}
+}
+int CPlayer::skor()
+{
+
+
+	if (skorOn == true)
+	{
+		m_player.setTexture(m_playerText2);
+		m_spd = 4;
+		m_player.setTextureRect(sf::IntRect(0, yCount * 80, 80, 80));
+	}
+	return skorOn;
+}
+int CPlayer::skorEquip()
+{
+	skorOn = true;
+	return skorOn;
+}
+void CPlayer::speedDown()
+{
+	m_spd = 2;
+}
+void CPlayer::speedUp()
+{
+	m_spd = 4;
+}
+
+
+/*sf::Vector2i CPlayer::update()
+{
+	m_player.setTextureRect(rectHero);
+
+}
+sf::Vector2i CPlayer::update()
+{
+	bottom = m_player.getPosition().y + m_player.getGlobalBounds().height;
+	left = m_player.getPosition().x;
+	right = m_player.getPosition().x + m_player.getGlobalBounds().width;
+	top = m_player.getPosition().y;
+}
+bool collision(m_player p)
+{
+	if (right > p.left || left > p.right ||
+		top > p.bottom || bottom < p.top)
+	{
+		return false;
+	}
+	return true;
+}*/
